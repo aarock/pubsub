@@ -1,0 +1,5 @@
+.npmrc
+npde_modules
+package-lock.json
+tsconfig.json
+README.md
