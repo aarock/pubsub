@@ -1,18 +1,16 @@
-# !aarock/pubsub
+# @aarock/pubsub
 
 A graphql subscriptions implementation using postgres and apollo's graphql-subscriptions
 
-Forked from GraphQLCollege/graphql-postgres-subscriptions, where we replaced `pg-ipc` with `pg-listen` so that the database connection with retry and reconnect.
+Forked from GraphQLCollege/graphql-postgres-subscriptions, where `pg-ipc` is replaced by `pg-listen` so that the database connection can auto-reconnect
 
 This package implements the PubSubEngine Interface from the graphql-subscriptions package and also the new AsyncIterator interface. It allows you to connect your subscriptions manger to a postgres based Pub Sub mechanism to support multiple subscription manager instances.
 
 ## Installation
 
-`yarn add @originlabs/graphql-postgres-subscriptions-retry` or `npm install @originlabs/graphql-postgres-subscriptions-retry --save`
+`npm i @aarock/pubsub`
 
 ## Usage
-
-Example app: https://github.com/GraphQLCollege/apollo-subscriptions-example
 
 First of all, follow the instructions in [graphql-subscriptions](https://github.com/apollographql/graphql-subscriptions) to add subscriptions to your app.
 
@@ -88,12 +86,3 @@ ps.events.on("error", err => {
 ## Shutdown
 
 This fork provides a new `async close():Promise<void>` method that can be called to stop the listeners and release the `pg` connection for a clean shutdown.
-
-## Development
-
-This project has an integration test suite that uses [`jest`](https://facebook.github.io/jest/) to make sure everything works correctly.
-
-Run tests via docker compose:
-`docker compose build`
-`docker compose up`
-
