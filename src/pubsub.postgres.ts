@@ -1,58 +1,48 @@
 import { PubSub, PubSubOptions } from "graphql-subscriptions"
-import pgListen, { Options, Subscriber } from "pg-listen"
-import TypedEventEmitter from "typed-emitter"
-import { eventEmitterToAsyncIterator } from "./event-emitter-to-async-iterator.js"
+import { default as pgListen, Options, Subscriber } from "pg-listen"
+import { eventEmitterToAsyncIterator } from "./pubsub.utils.js"
+import { IPubSub } from "./pubsub.interface.js"
+import { ClientConfig } from "pg"
 
-const defaultCommonMessageHandler = message => message
-
-// export class PostgresPubSub extends PubSub {
-//   constructor ( options?: {} )
-//   pgListen: any
-//   triggers: any
-//   events: any
-//   commonMessageHandler: any
-//   connected: boolean
-//   connect (): Promise<void>
-//   close (): Promise<void>
-//   asyncIteratorPromised<T> ( triggers: string | string[] ): Promise<AsyncIterator<T>>
-// }
-
-type PostgresPubSubOptions = PubSubOptions & Options & {
-  commonMessageHandler: ( message: any ) => any,
-  topics: string[]
+export type PostgresPubSubOptions = PubSubOptions & Options & ClientConfig & {
+  commonMessageHandler?: ( message: any ) => any,
+  topics?: string[]
 }
 
-export class PostgresPubSub extends PubSub {
+export class PostgresPubSub extends PubSub implements IPubSub {
 
   pgListen: Subscriber<{ [ channel: string ]: any }>
   triggers: string[]
   //@ts-ignore
-  ee: TypedEventEmitter<any>
-  events: TypedEventEmitter<any>
+  ee: Subscriber[ "events" ]
+  events: Subscriber[ "events" ]
   connected: boolean
   _subscriptions: any
   _subIdCounter: number
   commonMessageHandler: ( message: any ) => any
 
-  constructor ( options: PostgresPubSubOptions ) {
-    const { commonMessageHandler, ...pgOptions } = options
+  constructor ( {
+    commonMessageHandler,
+    topics,
+    native,
+    paranoidChecking,
+    retryInterval,
+    retryLimit,
+    retryTimeout,
+    parse,
+    serialize,
+    ...pgOptions
+  }: PostgresPubSubOptions ) {
     super()
-    const pgListenOptions = {
-      native: options.native,
-      paranoidChecking: options.paranoidChecking,
-      retryInterval: options.retryInterval,
-      retryLimit: options.retryLimit,
-      retryTimeout: options.retryTimeout,
-      parse: options.parse,
-      serialize: options.serialize,
-    }
-    this.pgListen = pgListen( pgOptions, pgListenOptions )
-    this.triggers = ( pgOptions.topics || [] ).concat( [ 'error' ] )
+    //@ts-ignore
+    this.pgListen = pgListen( pgOptions, { native, paranoidChecking, retryInterval, retryLimit, retryTimeout, parse, serialize } )
+    this.triggers = ( topics || [] ).concat( [ 'error' ] )
+    //@ts-ignore
     this.ee = this.pgListen.notifications
     this.events = this.pgListen.events
     this._subscriptions = {}
     this._subIdCounter = 0
-    this.commonMessageHandler = commonMessageHandler || defaultCommonMessageHandler
+    this.commonMessageHandler = commonMessageHandler || ( ( x ) => x )
     this.connected = false
   }
 

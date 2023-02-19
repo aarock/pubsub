@@ -1,16 +1,19 @@
 {
   "name": "@aarock/pubsub",
   "version": "1.0.0",
-  "main": "index.js",
   "license": "MIT",
-  "peerDependencies": {
-    "graphql": ">=16"
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.js"
   },
   "dependencies": {
     "graphql-subscriptions": "^2.0",
     "iterall": "^1.2",
     "pg": "^8.9",
     "pg-listen": "^1.7"
+  },
+  "peerDependencies": {
+    "graphql": ">=16"
   },
   "devDependencies": {
     "graphql": "^16.6"

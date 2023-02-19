@@ -1,5 +1,3 @@
-// Based on https://github.com/apollographql/graphql-subscriptions/blob/master/src/event-emitter-to-async-iterator.ts
-// import { EventEmitter } from "events"
 import { $$asyncIterator } from "iterall"
 
 export function eventEmitterToAsyncIterator<T> ( pgListen, eventsNames, commonMessageHandler = message => message ) {
@@ -61,3 +59,5 @@ export function eventEmitterToAsyncIterator<T> ( pgListen, eventsNames, commonMe
 
   }
 }
+
+export function isTruthy ( val?: string ) { return !![ 'true', 'on', '1', 'yes', 'y' ].includes( val?.toLowerCase() ) }
