@@ -6,6 +6,9 @@
   "exports": {
     ".": "./dist/index.js"
   },
+  "scripts": {
+    "build": "tsc"
+  },
   "dependencies": {
     "graphql-subscriptions": "^2.0",
     "iterall": "^1.2",

@@ -1,5 +1,2 @@
-.npmrc
-npde_modules
-package-lock.json
+.github
 tsconfig.json
-README.md

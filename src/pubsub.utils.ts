@@ -44,7 +44,6 @@ export function eventEmitterToAsyncIterator<T> ( pgListen, eventsNames, commonMe
 
     return () {
       emptyQueue()
-
       return Promise.resolve( { value: undefined, done: true } )
     },
 
