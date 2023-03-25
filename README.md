@@ -12,6 +12,49 @@ This package implements the PubSubEngine Interface from the graphql-subscription
 
 ## Usage
 
+Import the module:
+
+```ts
+//...
+import { PubSubModule } from "@aarock/pubsub"
+//...
+@Module( {
+    imports: [
+        ScheduleModule.forRoot( /* ... */ ),
+        TypeOrmModule.forRoot( /* ... */ ),
+        GraphQLModule.forRoot<YogaDriverConfig>( /* ... */ ),
+        PubSubModule,
+    ],
+    exports: [ /* ... */ ],
+    providers: [ /* ... */ ],
+} )
+export class MyModule {
+  /* ... */
+}
+```
+
+Inject with `PUBSUB_TOKEN` and publish
+
+```ts
+export class MyService {
+
+  private maxHistory = 50
+
+  constructor (
+    // ...
+    @Inject( PUBSUB_TOKEN ) @Optional() protected readonly pubSub: IPubSub,
+  ) { super() }
+
+  // ...
+
+  triggerEvent () {
+    this.pubSub?.publish( "MyEvent", { foo:"bar" } )
+  }
+
+```
+
+## Internal Usage
+
 First of all, follow the instructions in [graphql-subscriptions](https://github.com/apollographql/graphql-subscriptions) to add subscriptions to your app.
 
 Afterwards replace `PubSub` with `PostgresPubSub`:

@@ -1,25 +1,25 @@
 {
   "compilerOptions": {
-    "module": "esnext",
     "target": "esnext",
+    "module": "esnext",
     "moduleResolution": "nodenext",
-    "lib": ["dom", "esnext"],
-    "esModuleInterop": true,
+    "lib": ["esnext"],
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
+    "incremental": true,
     "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
     "strictNullChecks": false,
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
-    "outDir": "./dist",
-    "baseUrl": "./"
+    "outDir": "dist",
+    "baseUrl": "src"
   },
-  "include": ["src"]
+  "exclude": ["./dist"],
+  "include": ["./src"],
 }
